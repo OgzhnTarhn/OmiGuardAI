@@ -30,6 +30,7 @@ ai_engine/__pycache__/
 # .NET
 backend_api/bin/
 backend_api/obj/
+backend_api/data/
 backend_api/.vs/
 *.user
 *.rsuser

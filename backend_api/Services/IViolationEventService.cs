@@ -4,7 +4,9 @@ namespace OmniGuard.BackendApi.Services;
 
 public interface IViolationEventService
 {
-    ViolationRecord Record(ViolationEventRequest request);
+    Task<ViolationRecord> RecordAsync(
+        ViolationEventRequest request,
+        CancellationToken cancellationToken = default);
 
     IReadOnlyCollection<ViolationRecord> GetRecent(int limit = 50);
 }

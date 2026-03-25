@@ -9,7 +9,9 @@ namespace OmniGuard.BackendApi.Controllers;
 public sealed class ViolationsController(IViolationEventService violationEventService) : ControllerBase
 {
     [HttpPost]
-    public ActionResult<CreateViolationResponse> Create([FromBody] ViolationEventRequest request)
+    public async Task<ActionResult<CreateViolationResponse>> Create(
+        [FromBody] ViolationEventRequest request,
+        CancellationToken cancellationToken)
     {
         if (request.BoundingBox.X2 <= request.BoundingBox.X1 || request.BoundingBox.Y2 <= request.BoundingBox.Y1)
         {
@@ -27,7 +29,7 @@ public sealed class ViolationsController(IViolationEventService violationEventSe
             return ValidationProblem(ModelState);
         }
 
-        var record = violationEventService.Record(request);
+        var record = await violationEventService.RecordAsync(request, cancellationToken);
 
         return Accepted(new CreateViolationResponse
         {
