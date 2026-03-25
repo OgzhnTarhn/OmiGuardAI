@@ -32,7 +32,10 @@ export default function ViolationFeed({ violations, error, isLoading }) {
           const isLatest = index === 0;
 
           return (
-            <article key={record.id ?? `${event.trackId}-${record.receivedAtUtc}`} className="violation-card">
+            <article
+              key={record.id ?? `${event.trackId}-${record.receivedAtUtc}`}
+              className={`violation-card ${isLatest ? "violation-card-latest" : ""}`}
+            >
               <div className="violation-topline">
                 <span className={`violation-priority ${isLatest ? "violation-priority-hot" : ""}`}>
                   {isLatest ? "Latest" : "Queued"}
@@ -66,7 +69,9 @@ export default function ViolationFeed({ violations, error, isLoading }) {
 
               <div className="violation-footline">
                 <span>Snapshot</span>
-                <code>{event.snapshotPath ?? "No snapshot yet"}</code>
+                <code className={event.snapshotPath ? "snapshot-ready" : "snapshot-empty"}>
+                  {event.snapshotPath ?? "No snapshot yet"}
+                </code>
               </div>
             </article>
           );

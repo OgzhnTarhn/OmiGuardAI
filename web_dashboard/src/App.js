@@ -97,6 +97,9 @@ export default function App() {
   const metrics = useMemo(() => {
     const latestRecord = violations[0];
     const latestEvent = latestRecord?.event;
+    const uniqueCameras = new Set(
+      violations.map((record) => record?.event?.cameraId).filter(Boolean)
+    ).size;
     const highestConfidence = violations.reduce((maxConfidence, currentRecord) => {
       const currentConfidence = currentRecord?.event?.confidence ?? 0;
       return Math.max(maxConfidence, currentConfidence);
@@ -104,6 +107,7 @@ export default function App() {
 
     return {
       activeFeedSize: violations.length,
+      activeCameras: uniqueCameras,
       lastCamera: latestEvent?.cameraId ?? "No camera yet",
       lastModel: latestEvent?.model ?? "No model yet",
       highestConfidence,
@@ -113,17 +117,42 @@ export default function App() {
 
   return (
     <div className="dashboard-shell">
-      <div className="dashboard-noise" aria-hidden="true" />
+      <div className="dashboard-aura dashboard-aura-left" aria-hidden="true" />
+      <div className="dashboard-aura dashboard-aura-right" aria-hidden="true" />
+      <div className="dashboard-grid" aria-hidden="true" />
 
       <main className="dashboard">
+        <header className="topbar">
+          <div className="brand-block">
+            <div className="brand-mark">OG</div>
+            <div>
+              <p className="eyebrow">Command Layer</p>
+              <h2 className="brand-title">OmniGuard AI</h2>
+            </div>
+          </div>
+
+          <div className="topbar-meta">
+            <span className="topbar-chip">Loss Prevention</span>
+            <span className="topbar-chip">Video Analytics</span>
+            <span className="topbar-chip">Live Monitoring</span>
+          </div>
+        </header>
+
         <section className="hero-panel">
           <div className="hero-copy">
-            <p className="eyebrow">Smart Building + Loss Prevention</p>
-            <h1>OmniGuard AI Operator Console</h1>
+            <p className="eyebrow">Smart Building Intelligence</p>
+            <h1>OmniGuard Control Surface</h1>
             <p className="hero-text">
-              Live event feed for line-crossing incidents, backend health, and model telemetry.
-              This panel is tuned for demo visibility rather than admin clutter.
+              A polished operator dashboard for live line-crossing incidents, backend health, and
+              AI runtime visibility. The interface is tuned for executive demos and control-room
+              readability.
             </p>
+
+            <div className="hero-tags">
+              <span>Realtime API telemetry</span>
+              <span>GPU-backed detection</span>
+              <span>Operator-first incident feed</span>
+            </div>
           </div>
 
           <div className="hero-status">
@@ -131,11 +160,17 @@ export default function App() {
             <p className="status-meta">API: {API_BASE_URL}</p>
             <p className="status-meta">Last refresh: {formatTimestamp(lastRefresh)}</p>
             <p className="status-meta">Health timestamp: {formatTimestamp(health.timestampUtc)}</p>
+
+            <div className="status-callout">
+              <span className="status-callout-label">Latest event</span>
+              <strong>{formatTimestamp(metrics.lastSeenAt)}</strong>
+            </div>
           </div>
         </section>
 
         <section className="metrics-grid">
           <MetricCard label="Feed Items" value={metrics.activeFeedSize} accent="amber" />
+          <MetricCard label="Active Cameras" value={metrics.activeCameras} accent="sage" />
           <MetricCard label="Last Camera" value={metrics.lastCamera} accent="teal" />
           <MetricCard label="Model" value={metrics.lastModel} accent="sand" />
           <MetricCard
@@ -148,13 +183,12 @@ export default function App() {
         <section className="content-grid">
           <div className="panel panel-brief">
             <div className="panel-header">
-              <p className="eyebrow">System Brief</p>
-              <h2>Demo Readiness</h2>
+              <p className="eyebrow">Operational Summary</p>
+              <h2>Executive Overview</h2>
             </div>
             <p className="brief-copy">
-              The dashboard polls the backend every 2.5 seconds. The latest incident stays at the
-              top, and the panel is intentionally optimized for quick operator scanning in a live
-              demo or control room walkthrough.
+              The console polls the backend every 2.5 seconds, elevates the newest violation to the
+              top, and keeps the primary monitoring context visible without overwhelming the viewer.
             </p>
             <div className="brief-list">
               <div>
@@ -163,11 +197,15 @@ export default function App() {
               </div>
               <div>
                 <span>Feed mode</span>
-                <strong>Polling /api/violations</strong>
+                <strong>Live polling /api/violations</strong>
               </div>
               <div>
                 <span>Health route</span>
                 <strong>/health</strong>
+              </div>
+              <div>
+                <span>Refresh cadence</span>
+                <strong>{`${(POLL_INTERVAL_MS / 1000).toFixed(1)} seconds`}</strong>
               </div>
             </div>
           </div>
