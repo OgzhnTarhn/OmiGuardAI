@@ -12,7 +12,22 @@ function formatConfidence(value) {
 }
 
 
-export default function ViolationFeed({ violations, error, isLoading }) {
+function buildSnapshotUrl(apiBaseUrl, snapshotPath) {
+  if (!snapshotPath) {
+    return null;
+  }
+
+  const normalizedPath = snapshotPath
+    .replace(/\\/g, "/")
+    .replace(/^\.?\//, "")
+    .replace(/^ai_engine\/artifacts\//, "")
+    .replace(/^artifacts\//, "");
+
+  return `${apiBaseUrl.replace(/\/+$/, "")}/assets/${normalizedPath}`;
+}
+
+
+export default function ViolationFeed({ apiBaseUrl, violations, error, isLoading }) {
   return (
     <section className="panel panel-feed">
       <div className="panel-header">
@@ -30,6 +45,7 @@ export default function ViolationFeed({ violations, error, isLoading }) {
         {violations.map((record, index) => {
           const event = record.event ?? {};
           const isLatest = index === 0;
+          const snapshotUrl = buildSnapshotUrl(apiBaseUrl, event.snapshotPath);
 
           return (
             <article
@@ -73,6 +89,17 @@ export default function ViolationFeed({ violations, error, isLoading }) {
                   {event.snapshotPath ?? "No snapshot yet"}
                 </code>
               </div>
+
+              {snapshotUrl ? (
+                <div className={`snapshot-frame ${isLatest ? "snapshot-frame-featured" : ""}`}>
+                  <img
+                    className="snapshot-image"
+                    src={snapshotUrl}
+                    alt={`Violation snapshot for track ${event.trackId ?? "unknown"}`}
+                    loading="lazy"
+                  />
+                </div>
+              ) : null}
             </article>
           );
         })}

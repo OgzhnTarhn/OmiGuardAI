@@ -210,7 +210,12 @@ export default function App() {
             </div>
           </div>
 
-          <ViolationFeed violations={violations} error={error} isLoading={isLoading} />
+          <ViolationFeed
+            apiBaseUrl={API_BASE_URL}
+            violations={violations}
+            error={error}
+            isLoading={isLoading}
+          />
         </section>
       </main>
     </div>
