@@ -41,6 +41,10 @@ public sealed class ViolationEventRequest
 
     [Required]
     public BoundingBoxDto BoundingBox { get; init; } = new();
+
+    public string? SnapshotPath { get; init; }
+
+    public DateTimeOffset? SnapshotCreatedUtc { get; init; }
 }
 
 public sealed class PointDto
