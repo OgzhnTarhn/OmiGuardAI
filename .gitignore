@@ -1,0 +1,46 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+ai_engine/venv/
+ai_engine/.venv/
+ai_engine/env/
+ai_engine/__pycache__/
+
+# Python model weights and runtime artifacts
+*.pt
+*.onnx
+*.engine
+*.torchscript
+
+# .NET
+backend_api/bin/
+backend_api/obj/
+backend_api/.vs/
+*.user
+*.rsuser
+*.suo
+
+# Node / React
+web_dashboard/node_modules/
+web_dashboard/build/
+web_dashboard/dist/
+web_dashboard/.next/
+web_dashboard/.cache/
+
+# Logs
+*.log
