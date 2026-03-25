@@ -50,6 +50,10 @@ def resolve_model_reference() -> str:
     if preferred_local.exists():
         return str(preferred_local)
 
+    preferred_project_level = PROJECT_ROOT / PREFERRED_MODEL_NAME
+    if preferred_project_level.exists():
+        return str(preferred_project_level)
+
     # If the medium model is not present locally, allow Ultralytics to resolve it.
     return PREFERRED_MODEL_NAME
 
@@ -67,6 +71,13 @@ def load_model() -> tuple[YOLO, str]:
                 f"{FALLBACK_MODEL_NAME} ile devam ediliyor."
             )
             return YOLO(str(fallback_local)), fallback_local.name
+        fallback_project_level = PROJECT_ROOT / FALLBACK_MODEL_NAME
+        if fallback_project_level.exists():
+            print(
+                f"Uyari: {PREFERRED_MODEL_NAME} yuklenemedi ({exc}). "
+                f"{FALLBACK_MODEL_NAME} ile devam ediliyor."
+            )
+            return YOLO(str(fallback_project_level)), fallback_project_level.name
         raise
 
 

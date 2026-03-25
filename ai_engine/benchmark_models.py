@@ -10,6 +10,7 @@ from ultralytics import YOLO
 
 
 BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent
 DEFAULT_MODELS = ["yolov8n.pt", "yolov8s.pt", "yolov8m.pt"]
 DEFAULT_CLASSES = [0]
 DEFAULT_CONFIDENCE = 0.60
@@ -94,6 +95,10 @@ def resolve_model_reference(model_name: str) -> str:
     local_candidate = BASE_DIR / model_name
     if local_candidate.exists():
         return str(local_candidate)
+
+    project_candidate = PROJECT_ROOT / model_name
+    if project_candidate.exists():
+        return str(project_candidate)
 
     return model_name
 

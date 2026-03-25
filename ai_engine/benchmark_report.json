@@ -1,0 +1,33 @@
+{
+  "report": [
+    {
+      "model": "yolov8n.pt",
+      "resolvedModel": "C:\\Users\\O\u011fuzhan\\Repos\\VS Code\\OmniGuardAI\\ai_engine\\yolov8n.pt",
+      "mode": "track",
+      "device": "cuda:0",
+      "frameWidth": 640,
+      "frameHeight": 480,
+      "measuredFrames": 120,
+      "avgLatencyMs": 27.56,
+      "minLatencyMs": 16.21,
+      "maxLatencyMs": 36.11,
+      "avgFps": 36.28,
+      "avgDetectionsPerFrame": 0
+    },
+    {
+      "model": "yolov8m.pt",
+      "resolvedModel": "C:\\Users\\O\u011fuzhan\\Repos\\VS Code\\OmniGuardAI\\yolov8m.pt",
+      "mode": "track",
+      "device": "cuda:0",
+      "frameWidth": 640,
+      "frameHeight": 480,
+      "measuredFrames": 120,
+      "avgLatencyMs": 30.94,
+      "minLatencyMs": 21.76,
+      "maxLatencyMs": 39.91,
+      "avgFps": 32.32,
+      "avgDetectionsPerFrame": 0
+    }
+  ],
+  "failures": []
+}
